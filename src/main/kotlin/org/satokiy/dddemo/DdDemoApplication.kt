@@ -36,6 +36,20 @@ class DdDemoApplication {
     }
 
     @RequestMapping(
+        method = [RequestMethod.GET],
+        value = ["/hello/crash"],
+    )
+    fun getHelloCrashDD() {
+        try {
+            throw Exception("Something wrong happened.");
+        } catch (e: Exception) {
+            // pass exception as last argument of log call
+            logger.error("an exception occurred", e)
+            throw e
+        }
+    }
+
+    @RequestMapping(
         method = [RequestMethod.POST],
         value = ["/hello"],
     )
