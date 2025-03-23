@@ -1,0 +1,44 @@
+apiVersion: "datadoghq.com/v2alpha1"
+kind: "DatadogAgent"
+metadata:
+  name: "datadog"
+spec:
+  global:
+    clusterName: "arn:aws:eks:ap-northeast-1:643846999391:cluster/eks-from-eksctl"
+    registry: "public.ecr.aws/datadog"
+    site: "ap1.datadoghq.com"
+    credentials:
+      apiSecret:
+        secretName: "datadog-secret"
+        keyName: "api-key"
+    criSocketPath: /run/dockershim.sock
+  features:
+    orchestratorExplorer:
+      enabled: true
+    logCollection:
+      enabled: true
+      containerCollectAll: true
+    apm:
+      enabled: true
+      unixDomainSocketConfig:
+        path: /var/run/datadog/apm.socket
+    admissionController:
+      enabled: true
+      mutateUnlabelled: true
+    liveProcessCollection:
+      enabled: true
+  override:
+    nodeAgent:
+      env:
+        - name: DD_CONTAINER_INCLUDE
+          value: "image:.*stkymd.* image:.*ingress-nginx.*"
+        - name: DD_CONTAINER_EXCLUDE
+          value: "name:.*"
+    clusterAgent:
+      image:
+        name: gcr.io/datadoghq/cluster-agent:latest
+      env:
+        - name: DD_CONTAINER_INCLUDE
+          value: "image:.*stkymd.* image:.*ingress-nginx.*"
+        - name: DD_CONTAINER_EXCLUDE
+          value: "name:.*"

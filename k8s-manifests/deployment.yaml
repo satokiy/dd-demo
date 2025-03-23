@@ -19,6 +19,8 @@ spec:
         tags.datadoghq.com/service: spring-boot-app
         tags.datadoghq.com/version: "0.0.1"
         admission.datadoghq.com/enabled: "true"
+      annotations:
+        admission.datadoghq.com/java-lib.version: "v1.47.2"
     spec:
       containers:
         - name: spring-boot-app
