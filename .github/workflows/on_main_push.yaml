@@ -38,7 +38,7 @@ jobs:
           COMMIT_SHA=$(git rev-parse --short HEAD)
           echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
           FULL_COMMIT_SHA=$(git rev-parse HEAD)
-          sed -i "s|stkymd/spring-boot-docker:latest|stkymd/spring-boot-docker:$COMMIT_SHA|g" k8s-manifests/deployment.yaml
+          sed -i "s|stkymd/spring-boot-docker:[^ ]*|stkymd/spring-boot-docker:$COMMIT_SHA|g" k8s-manifests/deployment.yaml
           sed -i "/DD_GIT_COMMIT_SHA/{n;s|value: .*|value: $FULL_COMMIT_SHA|}" k8s-manifests/deployment.yaml
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
