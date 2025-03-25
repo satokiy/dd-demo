@@ -1,26 +1,13 @@
+# About
 
-build image
-```shell
-./gradlew bootBuildImage --imageName=stkymd/spring-boot-docker
-```
-docker login
-```shell
-docker login -u <user-name> 
-```
+Datadogお試しアプリケーション
 
-push
-```shell
-docker tag stkymd/spring-boot-docker:latest stkymd/spring-boot-docker:latest
-docker push stkymd/spring-boot-docker
-```
+# Stack
+- Kotlin(Spring Boot)
+- AWS EKS
+- Argo CD
 
-run
-```shell
-docker run -it -p 8080:8080 -t stkymd/spring-boot-docker
-```
+※ローカルPCからEKSにデプロイするためには、ARM instance 向けにイメージをビルドする必要があります。
 
-deploy
-```shell
-kubectl apply -f k8s-manifests/
-```
-
+# Workflow
+main ブランチにマージされるとGithub Actionsが実行され、EKSにデプロイされます。
