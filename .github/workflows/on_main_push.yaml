@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout code
@@ -22,10 +22,14 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push image
         run: docker push stkymd/spring-boot-docker:latest
-      
-      # manifestの更新
+
+  update-manifests-and-create-pr:
+    runs-on: ubuntu-24.04-arm
+    needs: build-and-push
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: update manifests
-        # macOSとGithub Actionsのホストではsedの扱いが違うので注意
         run: |
           COMMIT_SHA=$(git rev-parse --short HEAD)
           FULL_COMMIT_SHA=$(git rev-parse HEAD)
@@ -36,10 +40,10 @@ jobs:
           COMMIT_SHA=$(git rev-parse --short HEAD)
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b feature/$COMMIT_SHA
+          git checkout -b feature/auto-update-manifests
           git add k8s-manifests/deployment.yaml
           git commit -m "update deployment.yaml"
-          git push origin feature/$COMMIT_SHA
+          git push origin feature/auto-update-manifests
       - name: create pull request
         uses: peter-evans/create-pull-request@v3
         with:
@@ -47,5 +51,5 @@ jobs:
           commit-message: "update deployment.yaml"
           title: "update deployment.yaml"
           body: "update deployment.yaml"
-          branch: "feature/$COMMIT_SHA"
+          branch: "feature/auto-update-manifests"
           base: "main"
