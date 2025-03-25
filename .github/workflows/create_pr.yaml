@@ -1,4 +1,4 @@
-name: build and push docker image
+name: update manifests and create pr
 on:
   workflow_dispatch:
 
