@@ -25,10 +25,12 @@ jobs:
       
       # manifestの更新
       - name: update manifests
-        # macOSとsedの扱いが違うので注意
+        # macOSとGithub Actionsのホストではsedの扱いが違うので注意
         run: |
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          FULL_COMMIT_SHA=$(git rev-parse HEAD)
           sed -i "s|stkymd/spring-boot-docker:latest|stkymd/spring-boot-docker:$COMMIT_SHA|g" k8s-manifests/deployment.yaml
-          sed -i '' '/DD_GIT_COMMIT_SHA/{n;s|value: .*|value: $(git rev-parse HEAD)|}' k8s-manifests/deployment.yaml
+          sed -i "/DD_GIT_COMMIT_SHA/{n;s|value: .*|value: $FULL_COMMIT_SHA|}" k8s-manifests/deployment.yaml
       - name: create and push feature branch
         run: |
           COMMIT_SHA=$(git rev-parse --short HEAD)
