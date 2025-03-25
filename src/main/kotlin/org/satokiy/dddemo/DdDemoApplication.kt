@@ -21,7 +21,7 @@ class DdDemoApplication {
         method = [RequestMethod.GET],
         value = ["/hello/info"],
     )
-    fun getHelloDD(): ResponseEntity<HelloResponse> {
+    fun getHello(): ResponseEntity<HelloResponse> {
         logger.info("Hello Datadog Log!")
         return ResponseEntity(HelloResponse("Hello Datadog!"), HttpStatus.OK)
     }
@@ -30,7 +30,7 @@ class DdDemoApplication {
         method = [RequestMethod.GET],
         value = ["/hello/error"],
     )
-    fun getHelloErrorDD(): ResponseEntity<HelloResponse> {
+    fun getHelloError(): ResponseEntity<HelloResponse> {
         logger.error("Hello Datadog Error!")
         return ResponseEntity(HelloResponse("Hello Datadog Error!"), HttpStatus.OK)
     }
@@ -39,11 +39,10 @@ class DdDemoApplication {
         method = [RequestMethod.GET],
         value = ["/hello/crash"],
     )
-    fun getHelloCrashDD() {
+    fun getHelloCrash() {
         try {
             throw Exception("Something wrong happened.");
         } catch (e: Exception) {
-            // pass exception as last argument of log call
             logger.error("an exception occurred", e)
             throw e
         }
