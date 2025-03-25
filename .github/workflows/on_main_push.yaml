@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**'
+      - '!k8s-manifests/**'
 jobs:
   build-and-push:
     runs-on: ubuntu-24.04-arm
