@@ -29,15 +29,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: update manifests
+      - name: update manifests and push feature branch
         run: |
           COMMIT_SHA=$(git rev-parse --short HEAD)
           FULL_COMMIT_SHA=$(git rev-parse HEAD)
           sed -i "s|stkymd/spring-boot-docker:latest|stkymd/spring-boot-docker:$COMMIT_SHA|g" k8s-manifests/deployment.yaml
           sed -i "/DD_GIT_COMMIT_SHA/{n;s|value: .*|value: $FULL_COMMIT_SHA|}" k8s-manifests/deployment.yaml
-      - name: create and push feature branch
-        run: |
-          COMMIT_SHA=$(git rev-parse --short HEAD)
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b feature/auto-update-manifests
