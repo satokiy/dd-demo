@@ -23,11 +23,11 @@ jobs:
           git commit -m "update deployment.yaml"
           git push origin feature/$COMMIT_SHA
       - name: create pull request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "update deployment.yaml"
-          title: "update deployment.yaml"
-          body: "update deployment.yaml"
-          branch: ${{ env.BRANCH_NAME }}
-          base: "main"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "update deployment.yaml" \
+            --body "This PR updates the deployment.yaml file with the latest Docker image." \
+            --head "feature/${{ env.COMMIT_SHA }}" \
+            --base "main"
