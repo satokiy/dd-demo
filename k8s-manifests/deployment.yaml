@@ -24,14 +24,14 @@ spec:
     spec:
       containers:
         - name: spring-boot-app
-          image: stkymd/spring-boot-docker:latest
+          image: stkymd/spring-boot-docker:6f47a65
           ports:
             - containerPort: 8080
           env:
             - name: DD_LOGS_INJECTION
               value: "true"
             - name: DD_GIT_COMMIT_SHA
-              value: a25d47063a9ab98ceaee38569d924057f51d8a22
+              value: 6f47a65529436217b8feae5563622f9a96f074f3
             - name: DD_GIT_REPOSITORY_URL
               value: git@github.com:satokiy/dd-demo.git
             - name: DD_ENV
