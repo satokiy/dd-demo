@@ -1,32 +1,10 @@
 name: build and push docker image
 on:
-  push:
-    branches:
-      - main
-jobs:
-  build-and-push:
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: build image
-        run: ./gradlew bootBuildImage --imageName=stkymd/spring-boot-docker
-      - name: tag image
-        run: |
-          COMMIT_SHA=$(git rev-parse --short HEAD)
-          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
-          docker tag stkymd/spring-boot-docker:latest stkymd/spring-boot-docker:$COMMIT_SHA
-      - name: Login to Container Registry
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Push image
-        run: docker push stkymd/spring-boot-docker:latest
+  workflow_dispatch:
 
+jobs:
   update-manifests-and-create-pr:
     runs-on: ubuntu-24.04-arm
-    needs: build-and-push
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
