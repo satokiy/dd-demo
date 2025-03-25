@@ -31,7 +31,7 @@ spec:
             - name: DD_LOGS_INJECTION
               value: "true"
             - name: DD_GIT_COMMIT_SHA
-              value: 05c18d3b8c35fdbbc46845de35dbe7eb96d8fedc
+              value: 0cfa2942dde13678fb84733a11c5514259da75a5
             - name: DD_GIT_REPOSITORY_URL
               value: git@github.com:satokiy/dd-demo.git
             - name: DD_ENV
